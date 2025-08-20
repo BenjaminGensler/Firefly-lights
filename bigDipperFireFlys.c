@@ -11,17 +11,19 @@ int femaleLed1 = 7;      // the PWM pin the third LED is attached to
 int femaleLed2 = 6;      // the PWM pin the fourth LED is attached to
 
 int brightness = 0;  // how bright the LED is
-int fadeAmount = 20;  // how many points to fade the LED by
+int fadeAmount = 60;  // how many points to fade the LED by
 
 int brightness2 = 128; // start led2 at mid-brightness (offset)
-int fadeAmount2 = -20;  // fade in opposite direction
+int fadeAmount2 = -60;  // fade in opposite direction
 
 // Fade speeds (delay in ms for each speed)
-int fadeSpeeds[] = {60};
+int fadeSpeeds[] = {120};
 int fadesPerSpeed[] = {6}; // number of fades per speed
 int currentSpeed = 0;
 int fadeCount = 0;
 int numSpeeds = sizeof(fadeSpeeds) / sizeof(fadeSpeeds[0]);
+
+bool malesTurn = true; // Track whose turn it is
 
 void setup() {
   pinMode(maleLed1, OUTPUT);
@@ -31,11 +33,17 @@ void setup() {
 }
 
 void loop() {
-  analogWrite(maleLed1, brightness);
-  analogWrite(maleLed2, brightness2);
-
-  analogWrite(femaleLed1, brightness);
-  analogWrite(femaleLed2, brightness2);
+  if (malesTurn) {
+    analogWrite(maleLed1, brightness);
+    analogWrite(maleLed2, brightness2);
+    analogWrite(femaleLed1, 0);
+    analogWrite(femaleLed2, 0);
+  } else {
+    analogWrite(maleLed1, 0);
+    analogWrite(maleLed2, 0);
+    analogWrite(femaleLed1, brightness);
+    analogWrite(femaleLed2, brightness2);
+  }
 
   brightness = brightness + fadeAmount;
   brightness2 = brightness2 + fadeAmount2;
@@ -54,6 +62,7 @@ void loop() {
     if (fadeCount >= fadesPerSpeed[currentSpeed]) {
       fadeCount = 0;
       currentSpeed = (currentSpeed + 1) % numSpeeds;
+      malesTurn = !malesTurn; // Switch turn after sequence
     }
   }
 
