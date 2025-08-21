@@ -34,12 +34,12 @@ void setup() {
 
 void loop() {
   // Blink counters
-  static int male1Count = 0;
+  static int male1Count = 3;
   static int male2Count = 0;
   static int female1Count = 0;
   static int female2Count = 0;
   static bool male1Started = true;
-  static bool male2Started = false;
+  static bool male2Started = true;
   static bool female1Started = false;
   static bool female2Started = false;
 
@@ -47,24 +47,103 @@ void loop() {
   int onTime = 300;   // ms LED ON
   int offTime = 300;  // ms LED OFF
 
-  // Blink femaleLed1
-  if (female1Started) {
+  // Blink both femaleLEDs
+  if (female1Started && female2Started) {
     if(female1Count >= 6){
       female1Count = 0;
       male1Started = true;  // male1 starts after female1 finishes
       female1Started = false; // reset female1Started
     }
-    digitalWrite(femaleLed1, HIGH);
-    delay(onTime);
-    digitalWrite(femaleLed1, LOW);
-    delay(offTime);
-    female1Count++;
-
-    // Start femaleLed2 after 3 blinks of femaleLed1
-    if (female1Count == 3) {
-      female2Started = true;
+    else{
+      digitalWrite(femaleLed2, LOW);
+      delay(offTime / 2);
+      digitalWrite(femaleLed1, HIGH);
+      delay(onTime / 2);
+      digitalWrite(femaleLed2, HIGH);
+      delay(onTime / 2);
+      digitalWrite(femaleLed1, LOW);
+      delay(offTime / 2);
     }
+
+    female1Count++;
+    female2Count++;
   }
+
+  // Blink both maleLEDs
+  if (male1Started && male2Started) {
+    if(male1Count >= 6){
+      male1Count = 0;
+      female1Started = true;  // female1 starts after male1 finishes
+      male1Started = false; // reset male1Started
+    }
+    else{
+      digitalWrite(maleLed2, LOW);
+      delay(offTime / 2);
+      digitalWrite(maleLed1, HIGH);
+      delay(onTime / 2);
+      digitalWrite(maleLed2, HIGH);
+      delay(onTime / 2);
+      digitalWrite(maleLed1, LOW);
+      delay(offTime / 2);
+    }
+
+    male1Count++;
+    male2Count++;
+  }
+
+  // Blink male1Started & female2Started
+  if (male1Started && female2Started) {
+    if(female2Count >= 6){
+      delay(onTime / 2);
+      analogWrite(femaleLed2, LOW); // turn off femaleLed2
+      delay(onTime / 2);
+      
+      female2Count = 0;
+      male2Started = true;  // male2 starts after female2 finishes
+      female2Started = false; // reset female2Started
+    }
+    else{
+      digitalWrite(maleLed1, LOW);
+      delay(offTime / 2);
+      digitalWrite(femaleLed2, HIGH);
+      delay(onTime / 2);
+      digitalWrite(maleLed1, HIGH);
+      delay(onTime / 2);
+      digitalWrite(femaleLed2, LOW);
+      delay(offTime / 2);
+    }
+
+    male1Count++;
+    female2Count++;
+  }
+
+  // Blink male2Started & female1Started
+  if (male2Started && female1Started) {
+    if(male2Count >= 6){
+      delay(onTime / 2);
+      analogWrite(maleLed2, LOW); // turn off maleLed2
+      delay(onTime / 2);
+
+      male2Count = 0;
+      female2Started = true;  // female2 starts after male2 finishes
+      male2Started = false; // reset male2Started
+    }
+    else{
+      digitalWrite(femaleLed1, LOW);
+      delay(offTime / 2);
+      digitalWrite(maleLed2, HIGH);
+      delay(onTime / 2);
+      digitalWrite(femaleLed1, HIGH);
+      delay(onTime / 2);
+      digitalWrite(maleLed2, LOW);
+      delay(offTime / 2);
+    }
+
+    male1Count++;
+    female2Count++;
+  }
+
+
 
   // Blink femaleLed2 if started
   if (female2Started) {
@@ -101,7 +180,7 @@ void loop() {
   }
 
   // Blink maleLed2 if started
-  if (male2Started && male2Count <= 6) {
+  while (male2Started && male2Count <= 6) {
     if(male2Count >= 6){
       male2Count = 0;
       female2Started = true;
