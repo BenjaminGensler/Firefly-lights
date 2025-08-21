@@ -33,44 +33,84 @@ void setup() {
 }
 
 void loop() {
-  if (malesTurn) {
-    analogWrite(maleLed1, brightness);
-    analogWrite(maleLed2, brightness2);
-    analogWrite(femaleLed1, 0);
-    analogWrite(femaleLed2, 0);
-  } else {
-    analogWrite(maleLed1, 0);
-    analogWrite(maleLed2, 0);
-    analogWrite(femaleLed1, brightness);
-    analogWrite(femaleLed2, brightness2);
-  }
+  // Blink counters
+  static int male1Count = 0;
+  static int male2Count = 0;
+  static int female1Count = 0;
+  static int female2Count = 0;
+  static bool male1Started = true;
+  static bool male2Started = false;
+  static bool female1Started = false;
+  static bool female2Started = false;
 
-  brightness = brightness + fadeAmount;
-  brightness2 = brightness2 + fadeAmount2;
+  // Blink durations
+  int onTime = 300;   // ms LED ON
+  int offTime = 300;  // ms LED OFF
 
-  // reverse the direction of the fading at the ends of the fade:
-  if (brightness <= 0 || brightness >= 255) {
-    fadeAmount = -fadeAmount;
-    fadeCount++;
-
-    // Add longer delay when LED is off before fading in again
-    if (brightness <= 0 && fadeAmount > 0) {
-      delay(1000); // 1000 ms = 1 second, adjust as needed
+  // Blink femaleLed1
+  if (female1Started) {
+    if(female1Count >= 6){
+      female1Count = 0;
+      male1Started = true;  // male1 starts after female1 finishes
+      female1Started = false; // reset female1Started
     }
+    digitalWrite(femaleLed1, HIGH);
+    delay(onTime);
+    digitalWrite(femaleLed1, LOW);
+    delay(offTime);
+    female1Count++;
 
-    // After enough fades at current speed, switch to next speed
-    if (fadeCount >= fadesPerSpeed[currentSpeed]) {
-      fadeCount = 0;
-      currentSpeed = (currentSpeed + 1) % numSpeeds;
-      malesTurn = !malesTurn; // Switch turn after sequence
+    // Start femaleLed2 after 4 blinks of femaleLed1
+    if (female1Count == 4) {
+      female2Started = true;
     }
   }
 
-  // Reverse led2 at ends
-  if (brightness2 <= 0 || brightness2 >= 255) {
-    fadeAmount2 = -fadeAmount2;
+  // Blink femaleLed2 if started
+  if (female2Started) {
+    // Reset female2Count after 6 blinks
+    if(female2Count >= 6){
+      female2Count = 0;
+      male2Started = true; // start male2 after female2 finishes
+      female2Started = false; // reset female2Started
+    }
+    digitalWrite(femaleLed2, HIGH);
+    delay(onTime);
+    digitalWrite(femaleLed2, LOW);
+    delay(offTime);
+    female2Count++;
   }
 
-  // Wait for the current speed's delay
-  delay(fadeSpeeds[currentSpeed]);
+  // Blink maleLed1 if started
+  if (male1Started) {
+    if(male1Count >= 6){
+      male1Count = 0;
+      female1Started = true;
+      male1Started = false;
+    }
+    digitalWrite(maleLed1, HIGH);
+    delay(onTime);
+    digitalWrite(maleLed1, LOW);
+    delay(offTime);
+    male1Count++;
+
+    // Start maleLed2 after 4 blinks of maleLed1
+    if (male1Count == 4) {
+      male2Started = true;
+    }
+  }
+
+  // Blink maleLed2 if started
+  if (male2Started && male2Count <= 6) {
+    if(male2Count >= 6){
+      male2Count = 0;
+      female2Started = true;
+      male2Started = false;
+    }
+    digitalWrite(maleLed2, HIGH);
+    delay(onTime);
+    digitalWrite(maleLed2, LOW);
+    delay(offTime);
+    male2Count++;
+  }
 }
