@@ -60,8 +60,8 @@ void loop() {
     delay(offTime);
     female1Count++;
 
-    // Start femaleLed2 after 4 blinks of femaleLed1
-    if (female1Count == 4) {
+    // Start femaleLed2 after 3 blinks of femaleLed1
+    if (female1Count == 3) {
       female2Started = true;
     }
   }
@@ -94,8 +94,8 @@ void loop() {
     delay(offTime);
     male1Count++;
 
-    // Start maleLed2 after 4 blinks of maleLed1
-    if (male1Count == 4) {
+    // Start maleLed2 after 3 blinks of maleLed1
+    if (male1Count == 3) {
       male2Started = true;
     }
   }
