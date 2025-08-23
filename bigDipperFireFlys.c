@@ -55,13 +55,13 @@ void loop() {
       male1Started = false; // reset male1Started
     }
     else{
-      digitalWrite(maleLed1, HIGH);
-      delay(onTime);
       digitalWrite(maleLed2, HIGH);
       delay(onTime);
-      digitalWrite(maleLed1, LOW);
-      delay(offTime);
+      digitalWrite(maleLed1, HIGH);
+      delay(onTime);
       digitalWrite(maleLed2, LOW);
+      delay(offTime);
+      digitalWrite(maleLed1, LOW);
       delay(offTime);
 
       male1Count++;
@@ -100,13 +100,13 @@ void loop() {
       female1Started = false; // reset female1Started
     }
     else{
-      digitalWrite(femaleLed1, HIGH);
-      delay(onTime);
       digitalWrite(femaleLed2, HIGH);
       delay(onTime);
-      digitalWrite(femaleLed1, LOW);
-      delay(offTime);
+      digitalWrite(femaleLed1, HIGH);
+      delay(onTime);
       digitalWrite(femaleLed2, LOW);
+      delay(offTime);
+      digitalWrite(femaleLed1, LOW);
       delay(offTime);
       
       female1Count++;
@@ -122,13 +122,13 @@ void loop() {
       female2Started = false; // reset female2Started
     }
     else{
-      digitalWrite(femaleLed2, HIGH);
-      delay(onTime);
       digitalWrite(maleLed1, HIGH);
       delay(onTime);
-      digitalWrite(femaleLed2, LOW);
-      delay(offTime);
+      digitalWrite(femaleLed2, HIGH);
+      delay(onTime);
       digitalWrite(maleLed1, LOW);
+      delay(offTime);
+      digitalWrite(femaleLed2, LOW);
       delay(offTime);
 
       male1Count++;
