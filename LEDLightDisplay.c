@@ -1,15 +1,17 @@
 const int buttonPin = 2;
-const int ledPin = 13;
+const int ledPin = 12;
 
 void setup() {
   pinMode(buttonPin, INPUT_PULLUP);
   pinMode(ledPin, OUTPUT);
 }
 
+static bool lastButtonState = LOW;
+
 void loop() {
   static bool ledOn = false;
   static unsigned long ledOnTime = 0;
-  static bool lastButtonState = HIGH;
+  
 
   bool buttonState = digitalRead(buttonPin);
 
