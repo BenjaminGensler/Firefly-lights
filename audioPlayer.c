@@ -5,13 +5,16 @@ const int button1Pin = 2;
 const int button2Pin = 3;
 
 SoftwareSerial mySerial(10, 11); // RX, TX
-DFRobotDFPlayerMini myDFPlayer;
+DFRobotDFPlayerMini myDFPlayer; // DFPlayer object for mp3 reader module
 
 void setup() {
   pinMode(button1Pin, INPUT_PULLUP);
   pinMode(button2Pin, INPUT_PULLUP);
 
+  // Start software serial for DFPlayer Mini communication
   mySerial.begin(9600);
+  
+  // Initialize Serial for debugging
   Serial.begin(9600);
 
   if (!myDFPlayer.begin(mySerial)) {
@@ -31,3 +34,20 @@ void loop() {
     delay(500); // Debounce
   }
 }
+
+//// Simple pin state tester
+// const int testPin = 2; // Change to the pin you want to test
+
+// void setup() {
+//   pinMode(testPin, INPUT_PULLUP); // Use internal pull-up
+//   Serial.begin(9600);
+// }
+
+// void loop() {
+//   int state = digitalRead(testPin);
+//   Serial.print("Pin ");
+//   Serial.print(testPin);
+//   Serial.print(" state: ");
+//   Serial.println(state); // HIGH = not pressed, LOW = pressed
+//   delay(500);
+// }
