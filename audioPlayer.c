@@ -6,6 +6,8 @@ const int button2Pin = 3;
 
 SoftwareSerial mySerial(10, 11); // RX, TX
 DFRobotDFPlayerMini myDFPlayer; // DFPlayer object for mp3 reader module
+//Used the below documentation for functions of DFPlayer Mini
+//https://github.com/jonnieZG/DFPlayerMini
 
 void setup() {
   pinMode(button1Pin, INPUT_PULLUP);
@@ -26,11 +28,15 @@ void setup() {
 
 void loop() {
   if (digitalRead(button1Pin) == LOW) {
-    myDFPlayer.play(1); // Play 0001.mp3
+    Serial.println("Button 1 pressed"); // Debug message
+    myDFPlayer.stop(); // Stop any current playback
+    myDFPlayer.playFile(1); // Play 0001.mp3
     delay(500); // Debounce
   }
   if (digitalRead(button2Pin) == LOW) {
-    myDFPlayer.play(2); // Play 0002.mp3
+    Serial.println("Button 2 pressed"); // Debug message
+    myDFPlayer.stop(); // Stop any current playback
+    myDFPlayer.playFile(2); // Play 0002.mp3
     delay(500); // Debounce
   }
 }
