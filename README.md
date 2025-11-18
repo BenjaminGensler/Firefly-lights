@@ -7,27 +7,22 @@ Transform any space into a captivating firefly habitat with programmable LED dis
 ## ✨ Features
 Authentic Firefly Behavior
 Species-Specific Patterns: Accurate light sequences based on real firefly species
-Mating Communication: Simulates male and female firefly call-and-response patterns
+Mating Communication: Simulates male and female firefly call-and-response patterns (Without special movement patterns unfortunately such as the 'J' of the Big Dipper)
 Natural Timing: Realistic flash intervals and durations
 Environmental Responses: Light patterns that react to simulated conditions
 Interactive Museum Display
-Educational Interface: Push-button controls for different firefly species
-Audio Commentary: Built-in speaker system with detailed insect information
-Multi-Species Support: Expandable to showcase other bioluminescent insects
+Educational Interface: Push-button controls for different firefly species and other insect information
+Audio Commentary: Built-in speaker system with detailed insect information (optional)
+Multi-Species Support: Expandable to showcase other insects
 Professional Presentation: Museum-quality display setup
-Additional Insects
-Glowworms: Continuous glow patterns
-Lightning Bugs: Regional variation displays
-Bioluminescent Beetles: Various light-producing species
-Comparative Displays: Side-by-side species comparisons
-🛠️ Hardware Requirements
+
+## 🛠️ Hardware Requirements
 Arduino Board (Uno, Nano, or ESP32)
 LED Strips/Individual LEDs (Programmable WS2812B recommended)
 Push Buttons (for species selection)
-Speaker/Buzzer (for audio commentary)
+Speaker/Buzzer (for audio commentary) (optional)
 Resistors and Wiring (as needed)
 Display Case/Enclosure (optional, for museum setup)
-Power Supply (appropriate for LED count)
 
 ## 💡 Usage
 Basic Setup
