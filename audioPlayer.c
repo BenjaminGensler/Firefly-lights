@@ -4,8 +4,8 @@
 const int button1Pin = 2;
 const int button2Pin = 3;
 
-SoftwareSerial mySerial(10, 11); // RX, TX
-DFRobotDFPlayerMini myDFPlayer; // DFPlayer object for mp3 reader module
+SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
+DFRobotDFPlayerMini dfPlayer;
 //Used the below documentation for functions of DFPlayer Mini
 //https://github.com/jonnieZG/DFPlayerMini
 
@@ -14,29 +14,44 @@ void setup() {
   pinMode(button2Pin, INPUT_PULLUP);
 
   // Start software serial for DFPlayer Mini communication
-  mySerial.begin(9600);
-  
-  // Initialize Serial for debugging
-  Serial.begin(9600);
+  Serial.begin(9600); 
+  mySoftwareSerial.begin(9600);
 
-  if (!myDFPlayer.begin(mySerial)) {
-    Serial.println("Unable to begin DFPlayer Mini:");
+  Serial.println("Initializing DFPlayer Mini...");
+
+  if (!dfPlayer.begin(mySoftwareSerial)) {  // Use softwareSerial to communicate with mp3.
+    Serial.println(F("Unable to begin:"));
+    Serial.println(F("1. Please recheck the connection!"));
+    Serial.println(F("2. Please insert the SD card!"));
     while(true);
   }
-  myDFPlayer.volume(20); // Set volume (0-30)
+
+  dfPlayer.volume(20);  // Set volume value (0~30).
+  dfPlayer.EQ(DFPLAYER_EQ_NORMAL);
+  dfPlayer.outputDevice(DFPLAYER_DEVICE_SD);
+
+  delay(500);
+
+  // Play file 0001.mp3 in root folder
+  dfPlayer.play(1);
+
+  // If you want to play from a specific folder, use:
+  // dfPlayer.playFolder(1, 1); // Play 0001.mp3 in folder 01
+
+  Serial.println("Playing file...");
 }
 
 void loop() {
   if (digitalRead(button1Pin) == LOW) {
     Serial.println("Button 1 pressed"); // Debug message
-    myDFPlayer.stop(); // Stop any current playback
-    myDFPlayer.playFile(1); // Play 0001.mp3
+    dfPlayer.stop(); // Stop any current playback
+    dfPlayer.play(1); // Play 0001.mp3
     delay(500); // Debounce
   }
   if (digitalRead(button2Pin) == LOW) {
     Serial.println("Button 2 pressed"); // Debug message
-    myDFPlayer.stop(); // Stop any current playback
-    myDFPlayer.playFile(2); // Play 0002.mp3
+    dfPlayer.stop(); // Stop any current playback
+    dfPlayer.play(2); // Play 0002.mp3
     delay(500); // Debounce
   }
 }
