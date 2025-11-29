@@ -3,6 +3,12 @@
 
 const int button1Pin = 2;
 const int button2Pin = 3;
+const int button3Pin = 4;
+
+int lastButton1State = HIGH;
+int lastButton2State = HIGH;
+int lastButton3State = HIGH;
+int currentTrack = 1; // Tracks 1, 2, 3
 
 SoftwareSerial mySoftwareSerial(10, 11); // RX, TX
 DFRobotDFPlayerMini dfPlayer;
@@ -12,6 +18,7 @@ DFRobotDFPlayerMini dfPlayer;
 void setup() {
   pinMode(button1Pin, INPUT_PULLUP);
   pinMode(button2Pin, INPUT_PULLUP);
+  pinMode(button3Pin, INPUT_PULLUP);
 
   // Start software serial for DFPlayer Mini communication
   Serial.begin(9600); 
@@ -42,18 +49,36 @@ void setup() {
 }
 
 void loop() {
-  if (digitalRead(button1Pin) == LOW) {
-    Serial.println("Button 1 pressed"); // Debug message
-    dfPlayer.stop(); // Stop any current playback
-    dfPlayer.play(1); // Play 0001.mp3
+  int button1State = digitalRead(button1Pin);
+  int button2State = digitalRead(button2Pin);
+  int button3State = digitalRead(button3Pin);
+  
+  // Button 1: cycle through tracks 1, 2, 3
+  if (button1State == LOW && lastButton1State == HIGH) {
+    Serial.print("Button 1 pressed, playing track ");
+    Serial.println(currentTrack);
+    dfPlayer.play(currentTrack);
+    currentTrack += 2;
+    if (currentTrack > 5) currentTrack = 1;
     delay(500); // Debounce
   }
-  if (digitalRead(button2Pin) == LOW) {
-    Serial.println("Button 2 pressed"); // Debug message
-    dfPlayer.stop(); // Stop any current playback
-    dfPlayer.play(2); // Play 0002.mp3
+  lastButton1State = button1State;
+
+  // Button 2: play track 4
+  if (button2State == LOW && lastButton2State == HIGH) {
+    Serial.println("Button 2 pressed, playing track 4");
+    dfPlayer.play(7);
     delay(500); // Debounce
   }
+  lastButton2State = button2State;
+
+  // Button 3: play track 5
+  if (button3State == LOW && lastButton3State == HIGH) {
+    Serial.println("Button 3 pressed, playing track 5");
+    dfPlayer.play(9);
+    delay(500); // Debounce
+  }
+  lastButton3State = button3State;
 }
 
 //// Simple pin state tester
